@@ -2,16 +2,17 @@ import tkinter as tk
 import random
 
 # ルーレットの選択肢
-weights = ["+90 kg", "+70 kg", "-70 kg"]
+weights = ["+90 kg", "+70 kg", "-70 kg", "+60 kg", "-60 kg", "+50 kg", "-50 kg"]
 spinning = False  # ルーレットの回転フラグ
 speed = 20  # 初期スクロール速度
 
 
 def spin_roulette():
+    canvas.itemconfig(central_text, text="")
     """ルーレットを回転させる（縦スクロール風に動かす）"""
     global spinning, speed
     spinning = True
-    speed = 20  # 速度リセット
+    speed = 70  # 速度リセット
     move_text()
 
 
@@ -30,8 +31,11 @@ def move_text():
                 canvas.itemconfig(item, text=new_weight)
 
         # 速度を徐々に落とす（減速アニメーション）
-        if speed > 1:
-            speed *= 0.95
+        if speed > 0:
+            speed *= 0.99
+        if speed < 0.1:
+            stop_roulette()  # 速度が0以下になったら停止
+            return
 
         root.after(50, move_text)
 
@@ -63,6 +67,18 @@ text_items = [
     ),
     canvas.create_text(
         200, 160, text="+90 kg", font=("Helvetica", 36), fill="white", anchor="center"
+    ),
+    canvas.create_text(
+        200, 240, text="-60 kg", font=("Helvetica", 36), fill="white", anchor="center"
+    ),
+    canvas.create_text(
+        200, 320, text="+60 kg", font=("Helvetica", 36), fill="white", anchor="center"
+    ),
+    canvas.create_text(
+        200, 400, text="-50 kg", font=("Helvetica", 36), fill="white", anchor="center"
+    ),
+    canvas.create_text(
+        200, 480, text="+50 kg", font=("Helvetica", 36), fill="white", anchor="center"
     ),
 ]
 
